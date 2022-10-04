@@ -1,42 +1,80 @@
 import logo from "./logo.svg";
 import "./App.css";
-<<<<<<< HEAD
-import Message from "./components/Message.js";
-import Header from "./components/Header.js";
-import Body from "./components/Body.js";
-import Footer from "./components/Footer.js";
+import React, { useState, useEffect } from "react";
 
 function App() {
-  const mainPage = "main page";
-  const message = "this is a message";
-  const header = "this is a header";
-  const body = "this is a body";
-  const footer = "this is a footer";
+  const [messageList, setMessageList] = useState([]);
+  const [messageText, setMessageText] = useState("");
+  const [author, setAuthor] = useState("");
 
-  return (
-    <div className="App">
-      <h1>{mainPage}</h1>
-      <Message message={message} />
-      <Header header={header} />
-      <Body body={body} />
-      <Footer footer={footer} />
-=======
-import React, { useEffect } from "react";
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-function App() {
-  const [state, setState] = React.useState(0);
-  const [input, setInput] = React.useState("");
+    setMessageList((prevState) => [
+      ...prevState,
+      {
+        id: generateKey,
+        author: author,
+        messageText: messageText,
+      },
+    ]);
+
+    console.log(messageList);
+  };
 
   useEffect(() => {
-    console.log("render");
-  }, []);
+    setTimeout(() => {
+      botAnswer();
+    }, 1000);
+  }, [messageList]);
+
+  function generateKey(arr) {
+    return arr.length ? arr[arr.length - 1].id + 1 : 0;
+  }
+
+  function botAnswer() {
+    const authorAnswer = messageList[messageList.length - 1];
+
+    if (authorAnswer && authorAnswer.author) {
+      setMessageList((prevState) => [
+        ...prevState,
+        {
+          id: generateKey(prevState),
+          messageText: `bot answer: ${authorAnswer.author} - message shipped`,
+        },
+      ]);
+    }
+  }
 
   return (
     <div className="App">
-      <input value={input} onChange={(event) => setInput(event.target.value)} />
-      <p>{state}</p>
-      <button onClick={() => setState(state + 1)}>+</button>
->>>>>>> dev1
+      <form onSubmit={handleSubmit}>
+        <br />
+        <input
+          value={author}
+          onChange={(event) => setAuthor(event.target.value)}
+          placeholder="author"
+        />
+        <br />
+        <input
+          value={messageText}
+          onChange={(event) => setMessageText(event.target.value)}
+          placeholder="text"
+        />
+        <br />
+        <button type="submit">Add message</button>
+      </form>
+
+      {messageList.map((message) => {
+        return (
+          <div>
+            <p>
+              {message.author} {message.messageText}
+            </p>
+            <p></p>
+          </div>
+        );
+      })}
     </div>
   );
 }
