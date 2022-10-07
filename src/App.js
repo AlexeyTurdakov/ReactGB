@@ -1,6 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import Header from "./components/Header";
 
 function App() {
   const [messageList, setMessageList] = useState([]);
@@ -18,8 +19,6 @@ function App() {
         messageText: messageText,
       },
     ]);
-
-    console.log(messageList);
   };
 
   useEffect(() => {
@@ -48,6 +47,7 @@ function App() {
 
   return (
     <div className="App">
+      <Header />
       <form onSubmit={handleSubmit}>
         <br />
         <input
@@ -71,7 +71,6 @@ function App() {
             <p>
               {message.author} {message.messageText}
             </p>
-            <p></p>
           </div>
         );
       })}
