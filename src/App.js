@@ -1,6 +1,13 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import Header from "./components/Header";
+import { Route, Routes } from "react-router-dom";
+import Chat1 from "./components/Chat1";
+import Chat2 from "./components/Chat2";
+import Chat3 from "./components/Chat3";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   const [messageList, setMessageList] = useState([]);
@@ -45,35 +52,53 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <Header />
-      <form onSubmit={handleSubmit}>
-        <br />
-        <input
-          value={author}
-          onChange={(event) => setAuthor(event.target.value)}
-          placeholder="author"
-        />
-        <br />
-        <input
-          value={messageText}
-          onChange={(event) => setMessageText(event.target.value)}
-          placeholder="text"
-        />
-        <br />
-        <button type="submit">Add message</button>
-      </form>
+    <>
+      <div className="App">
+        <Header />
+        <form onSubmit={handleSubmit}>
+          <br />
+          <TextField
+            id="outlined-basic"
+            label="author"
+            variant="outlined"
+            onChange={(event) => setAuthor(event.target.value)}
+          />
+          <br />
+          <TextField
+            id="outlined-basic"
+            label="text"
+            variant="outlined"
+            onChange={(event) => setMessageText(event.target.value)}
+            style={{ margin: "20px 0" }}
+          />
+          <br />
+          <Button
+            variant="contained"
+            type="submit"
+            style={{ margin: "0 0 20px 0" }}
+          >
+            Add message
+          </Button>
+        </form>
 
-      {messageList.map((message) => {
-        return (
-          <div>
-            <p>
-              {message.author} {message.messageText}
-            </p>
-          </div>
-        );
-      })}
-    </div>
+        {messageList.map((message) => {
+          return (
+            <div key={message.id}>
+              <p>
+                {message.author} {message.messageText}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      <Routes>
+        <Route path={"/components/chat1"} element={<Chat1 />}></Route>
+        <Route path={"/components/chat2"} element={<Chat2 />}></Route>
+        <Route path={"/components/chat3"} element={<Chat3 />}></Route>
+        <Route path={"*"} element={<NotFoundPage />}></Route>
+      </Routes>
+    </>
   );
 }
 
